@@ -44,5 +44,5 @@ This is free software but it took some time to develop.  If you use it, please s
 ## Issues
 Create a GitHub Issue: https://github.com/cognetif/tinyimg or better yet become a contributor.
 
-## Developper
+## Developer
 Cognetif : Jordin Brown jbrown@cognetif.com
