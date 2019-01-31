@@ -1,0 +1,19 @@
+{
+    "name": "cognetif/perch_tinyimg",
+    "description": "Perch app to optimize uploaded images via Tinify",
+    "type": "library",
+    "require": {
+        "tinify/tinify": "^1.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordin Brown",
+            "email": "jbrown@cognetif.com"
+        }
+    ],
+    "autoload" : {
+        "psr-4":{
+            "Cognetif\\" :"lib\\Cognetif"}
+    }
+}
