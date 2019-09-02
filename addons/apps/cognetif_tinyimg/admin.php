@@ -60,9 +60,19 @@ if ($CurrentUser->logged_in()) {
 
     ]);
 
+    $this->add_setting('cognetif_tinyimg_compress_original', 'Original File', 'select', 'compress_original', [
+        [
+            'label' => $Lang->get('Compress - Saves disk space but derived images are based on a compressed original.'),
+            'value' => '1',
+        ],
+        [
+            'label' => $Lang->get('Ignore - Uses more disk space but derived images are based on the true original image.'),
+            'value' => '0',
+        ],
+    ]);
+
 
     include('util/autoloader.php');
     include('util/events.php');
-//    include('util/scheduled_tasks.php');
 
 }

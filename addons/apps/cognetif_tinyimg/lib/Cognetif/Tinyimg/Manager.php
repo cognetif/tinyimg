@@ -10,7 +10,13 @@ class Manager
      */
     public static function on_upload_image($event)
     {
-        Job::create_event($event);
+        $api       = new PerchAPI(1.0, 'cognetif_tinyimg');
+        $settings = $api->get('Settings');
+        $originalAction   = $settings->get('cognetif_tinyimg_compress_original')->val();
+
+        if ($originalAction === '1') {
+            Job::create_event($event);
+        }
     }
 
     /**
