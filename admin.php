@@ -1,8 +1,8 @@
 <?php
 
-$API    = new PerchAPI(1.0, 'cognetif_tinyimg');
-$Lang   = $API->get('Lang');
-
+$API = new PerchAPI(1.0, 'cognetif_tinyimg');
+$Lang = $API->get('Lang');
+$db = $API->get('DB');
 if ($CurrentUser->logged_in()) {
     $this->register_app('cognetif_tinyimg', 'TinyImage', 1, 'Image optimisation', '1.0');
     $this->require_version('cognetif_tinyimg', '3.0');
@@ -60,19 +60,20 @@ if ($CurrentUser->logged_in()) {
 
     ]);
 
-    $this->add_setting('cognetif_tinyimg_compress_original', 'Original File', 'select', 'compress_original', [
+    $this->add_setting('cognetif_tinyimg_compress_original', 'Original File Compression', 'select', 'compress_original',
         [
-            'label' => $Lang->get('Compress - Saves disk space but derived images are based on a compressed original.'),
-            'value' => '1',
-        ],
-        [
-            'label' => $Lang->get('Ignore - Uses more disk space but derived images are based on the true original image.'),
-            'value' => '0',
-        ],
-    ]);
-
+            [
+                'label' => $Lang->get('Compress - Saves disk space but derived images are based on a compressed original.'),
+                'value' => '1',
+            ],
+            [
+                'label' => $Lang->get('No Compression - Uses more disk space but derived images are based on the true original image.'),
+                'value' => '0',
+            ],
+        ]);
 
     include('util/autoloader.php');
     include('util/events.php');
+    include('db/updates.php');
 
 }

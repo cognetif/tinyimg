@@ -20,11 +20,12 @@ class Job extends \PerchAPI_Base
 
         self::activate($api, $db);
 
+        $orig_size = filesize($asset->file_path);
         $data = [
             'file_name' => $asset->file_name,
             'file_path' => $asset->file_path,
             'web_path'  => $asset->web_path,
-            'orig_size' => filesize($asset->file_path),
+            'orig_size' => $orig_size,
         ];
 
         $id = $db->insert(PERCH_DB_PREFIX . self::DB_TABLE, $data);
@@ -34,6 +35,7 @@ class Job extends \PerchAPI_Base
             $db->update(PERCH_DB_PREFIX . self::DB_TABLE, [
                 'tiny_size' => $result,
                 'status'    => 'DONE',
+                'percent_saved' => round(100 * (1-($result/$orig_size)), 2),
             ], 'queueID', $id);
 
         }

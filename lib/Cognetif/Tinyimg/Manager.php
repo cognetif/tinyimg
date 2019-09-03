@@ -1,6 +1,7 @@
 <?php
 
 namespace Cognetif\Tinyimg;
+use \PerchAPI;
 
 class Manager
 {
@@ -35,19 +36,25 @@ class Manager
     public static function run_queue($api)
     {
         $queue  = new Queue($api);
-        $jobs   = $queue->get_by('status', 'QUEUED');
+        $jobs   = $queue->get_by('status', 'QUEUED', 'queueID ASC');
         $result = true;
         $count  = is_array($jobs) ? count($jobs) : 0;
 
         if ($jobs) {
-            foreach ($jobs as $job) {
 
+            foreach ($jobs as $job) {
+                $job->update(['status' => 'WORKING']);
+            }
+
+            foreach ($jobs as $job) {
                 try {
-                    $filePath = $job->get_details()['file_path'];
-                    self::tinify_image($api, $filePath);
+                    $details = $job->get_details();
+                    $filePath = $details['file_path'];
+                    $tinySize = self::tinify_image($api, $filePath);
                     $data = [
                         'status'    => 'DONE',
                         'tiny_size' => filesize($filePath),
+                        'percent_saved' => round(100 * (1-($tinySize/$details['orig_size'])), 2),
                     ];
                 } catch (\Exception $e) {
                     $result = false;

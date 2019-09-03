@@ -34,14 +34,31 @@ $Listing->add_col([
 
 $Listing->add_col([
     'title' => $Lang->get('Status'),
-    'value' => 'status',
+    'value' => function ($Item) use ($Lang){
+        switch($Item->status()) {
+            case 'DONE':
+                return"&#9989; " . $Lang->get('Done');
+            case 'QUEUED':
+                return "&#9201; ". $Lang->get('Queued');
+            case 'WORKING':
+                return "&#128476; ". $Lang->get('Working');
+            default :
+                return "&#128165; ". $Lang->get('Error');
+        }
+    },
     'sort'  => 'status',
 ]);
 
 $Listing->add_col([
     'title' => $Lang->get('Original size'),
     'value' => function ($Item) {
-        return PerchUtil::format_file_size($Item->orig_size());
+        if ($Item->orig_size() < 1048576) {
+            $size = round($Item->orig_size()/1024, 2).'<span class="unit">KB</span>';
+        } else {
+            $size = round($Item->orig_size()/1024/1024, 2).'<span class="unit">MB</span>';
+        }
+
+        return $size;
     },
     'sort'  => 'orig_size',
 ]);
@@ -52,7 +69,13 @@ $Listing->add_col([
     'value' => function ($Item) {
         if ($Item->tiny_size() > 0) {
 
-            return PerchUtil::format_file_size($Item->tiny_size());
+            if ($Item->tiny_size() < 1048576) {
+                $size = round($Item->tiny_size()/1024, 2).'<span class="unit">KB</span>';
+            } else {
+                $size = round($Item->tiny_size()/1024/1024, 2).'<span class="unit">MB</span>';
+            }
+
+            return $size;
         } else {
             return '';
         }
@@ -61,38 +84,40 @@ $Listing->add_col([
 
 $Listing->add_col([
     'title' => $Lang->get('Percent Savings'),
-    'sort'  => 'saved_percent',
-    'value' => function ($Item) {
-        if ($Item->tiny_size() > 0) {
+    'sort'  => 'percent_saved',
+    'value' => function ($Item) use ($Lang) {
 
-            //Use the same numbers as displayed
-            $orig = filter_var(PerchUtil::format_file_size($Item->orig_size()), FILTER_SANITIZE_NUMBER_INT);
-            $tiny = filter_var(PerchUtil::format_file_size($Item->tiny_size()), FILTER_SANITIZE_NUMBER_INT);
+        if ($Item->percent_saved() > 0) {
 
-            $savings = round((($orig - $tiny) / $orig) * 100, 0);
-
-            if ($savings <= 5) {
+            if ($Item->percent_saved() <= 5) {
                 $bgColor = "red";
-                $fgColor = "white";
-            } elseif ($savings > 5 && $savings < 10) {
+                $emoji = "&#128545;";
+            } elseif ($Item->percent_saved() > 5 && $Item->percent_saved() < 10) {
                 $bgColor = "goldenrod";
-                $fgColor = "#333";
+                $emoji = "&#128542;";
             } else {
                 $bgColor = "green";
-                $fgColor = "white;";
+                $emoji = "&#128513;";
             }
 
-            return sprintf("<div style=\"width:100%%; border:1px solid #333; position:relative;\">
-            <div style=\"position:absolute; bottom:100%%; left:0; right:0; text-align:center; color :#333\">%s%%</div>
-            <div style=\"display:inline-block; text-align:left; color:%s; background:%s; width:%s%%;\">&nbsp;</div></div>",
-                $savings,
-                $fgColor,
+            return sprintf("<div style=\"width:100%%; border:1px solid #333; position:relative; background:#eee; height:15px;\">
+            <div style=\"position:absolute; bottom:100%%; left:0; right:0; text-align:center; color :#333;\">%s%% %s</div>
+            <div style=\"display:inline-block; text-align:left; position: absolute; right:0; background:%s;height:13px; width:%s%%;\">&nbsp;</div></div>",
+                $Item->percent_saved(),
+                $emoji,
                 $bgColor,
-                $savings
+                $Item->percent_saved()
             );
 
         } else {
-            return '';
+            if ($Item->status() === 'DONE') {
+                return $Lang->get('No Savings') . ' <span title="'.$Lang->get('Why?').'">&#129300;</span>';
+            }
+
+            if ($Item->status() === 'ERROR') {
+                return "<div style='max-width:200px;'>&#128165; ".$Item->message(). "</div>";
+
+            }
         }
     },
 
