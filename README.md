@@ -11,8 +11,16 @@ TinyPNG/TinyJPG offers their service for free for the first 500 optimizations ea
 been deleted from the server.
   
 
-## Installation
-1. Add cognetif_tinyimg to `addons/apps/` folder and `apps.php`
+## Recommended installation via Git Submodules
+1. From the root of your project, run the following command to add the app as a submodule. Note to replace `<perch_path>` with the path or folder for perch from the root of your project :
+``` 
+$ git submodule add git@github.com:cognetif/tinyimg.git <perch_path>/addons/apps/cognetif_tinyimg
+```
+
+## Alternate installation via downloaded zip
+1. Download the zip: https://github.com/cognetif/tinyimg/archive/master.zip
+1. Unzip the file and rename the parent folder to `cognetif_tinyimg`.
+1. Copy the `cognetif_tinyimg` to `addons/apps/` folder and add `cognetif_tinyimg` to your `apps.php` file.
 1. Create an API Key at: https://tinyjpg.com/developers
 1. Add your API Key in the Tinify API Key settings on the main Perch Settings page.
 
@@ -34,6 +42,11 @@ Optimizing with "CRON" mode will not hinder the upload request, but unoptimized 
 On the Perch settings page, you can specify the CRON frequency in minutes.
 
 If you are using the "CRON" mode, you must have setup the Perch scheduled tasks as documented.
+
+## Original File Compression
+There are 2 ways to handle the original file uploaded and its configurable from the settings page :
+1. Compress: This saves hosting disk usage as the original file is uploaded and compressed to a smaller file size.  Derived images from the original are also compressed.  Some developers do not like that derived images are compressed from a compressed source. 
+2. No Compression: This uses more hosting disk space as the original file is not compressed. This mode is intended for developers who want the derived images to be created from an uncompressed source.
 
 ## License
 This project is free, open source, and GPL friendly. You can use it for commercial projects, open source projects, or really almost whatever you want.

@@ -34,5 +34,16 @@
     "The queue completed successfully.": "The queue completed successfully.",
     "Optimization Mode": "Optimization Mode",
     "Tinify API Key": "Tinify API Key",
-    "The queue has been cleaned.": "The queue has been cleaned."
+    "The queue has been cleaned.": "The queue has been cleaned.",
+    "Compress - Saves disk space but derived images are based on a compressed original.": "Compress - Saves disk space but derived images are based on a compressed original.",
+    "No Compression - Uses more disk space but derived images are based on the true original image.": "No Compression - Uses more disk space but derived images are based on the true original image.",
+    "Original File Compression": "Original File Compression",
+    "No Savings": "No Savings",
+    "No Savings &#129300;": "No Savings &#129300;",
+    "ERROR:": "ERROR:",
+    "Why?": "Why?",
+    "Done": "Done",
+    "Queued": "Queued",
+    "Working": "Working",
+    "Error": "Error"
 }
