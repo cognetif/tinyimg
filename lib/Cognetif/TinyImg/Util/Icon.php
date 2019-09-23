@@ -1,6 +1,6 @@
 <?php
 
-namespace Cognetif;
+namespace Cognetif\TinyImg\Util;
 
 class Icon
 {
@@ -24,7 +24,7 @@ class Icon
     private static function load()
     {
         if (is_null(self::$data)) {
-            self::$data = require(__DIR__ . '/../../util/icons.php');
+            self::$data = require(__DIR__ . '/../../../../util/icons.php');
         }
     }
 

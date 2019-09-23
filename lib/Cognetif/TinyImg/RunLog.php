@@ -1,6 +1,6 @@
 <?php
 
-namespace Cognetif\Tinyimg;
+namespace Cognetif\TinyImg;
 
 
 class RunLog extends \PerchAPI_Base
