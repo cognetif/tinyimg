@@ -1,6 +1,6 @@
 <?php
 
-use Cognetif\Tinyimg\Queue;
+use Cognetif\TinyImg\Queue;
 
 $Paging->set_per_page(50);
 $Queue = new Queue($API);

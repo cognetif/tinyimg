@@ -2,7 +2,6 @@
 /**
  * @var \PerchAPI_Lang $Lang
  * @var \PerchAPI_HTML $HTML
- * @var \Cognetif\
  */
 
 echo $HTML->title_panel([

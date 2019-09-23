@@ -1,6 +1,6 @@
 <?php
 
-namespace Cognetif\Tinyimg;
+namespace Cognetif\TinyImg;
 
 class Job extends \PerchAPI_Base
 {

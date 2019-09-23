@@ -1,6 +1,6 @@
 <?php
 
-use Cognetif\Icon;
+use Cognetif\TinyImg\Util\Icon;
 
 /**
  * @var \PerchAPI_Lang $Lang

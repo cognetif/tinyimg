@@ -1,6 +1,6 @@
 <?php
 
-namespace Cognetif\Tinyimg;
+namespace Cognetif\TinyImg;
 use \PerchAPI;
 
 class Manager

@@ -1,6 +1,6 @@
 <?php
 
-use Cognetif\Tinyimg\Manager;
+use Cognetif\TinyImg\Manager;
 
 $Perch = PerchAdmin::fetch();
 
