@@ -26,3 +26,6 @@ include(__DIR__ . '/../modes/' . $mode . '.post.php');
 
 # Bottom layout
 include(PERCH_CORE . '/inc/btm.php');
+
+$commonCssHash = substr(md5(file_get_contents(__DIR__ . '/../assets/style.css')), 0, 8);
+echo '<link rel="stylesheet" href="' . PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg/assets/style.css?' . $commonCssHash . '" >';
