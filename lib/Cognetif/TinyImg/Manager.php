@@ -62,11 +62,19 @@ class Manager
                         $filePath = PERCH_SITEPATH . $details['web_path'];
                         try {
                             $tinySize = self::tinify_image($api, $filePath);
+                            if ($details['orig_size'] > 0) {
+                               $percentSaved =  round(100 * (1 - ($tinySize / $details['orig_size'])), 2);
+                            } else {
+                                \PerchUtil::debug('Cognetif TinyImg original file size is 0 for id' . $details['queueID'],'warning');
+                                $percentSaved = -1;
+                            }
+
                             $data = [
                                 'status' => 'DONE',
                                 'tiny_size' => filesize($filePath),
-                                'percent_saved' => round(100 * (1 - ($tinySize / $details['orig_size'])), 2),
+                                'percent_saved' => $percentSaved,
                             ];
+
                         } catch (\Tinify\Exception $e) {
                             \PerchUtil::debug('Tinify Exception Thrown', 'error');
                             \PerchUtil::debug($e->getMessage(), 'error');
