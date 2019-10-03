@@ -35,3 +35,15 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Changed namespace for lib objects to prevent collisions with other projects.
 
+## [v1.4.0] - 2019-10-03
+
+### Fixed
+- [Issue #7](https://github.com/cognetif/tinyimg/issues/7) : Missing exception handling when interacting with Tinify API.  If exception is thrown, image will now have an error status and the exception message is logged to Perch debug. (Turn on debug to see the errors).
+- Smart Bar tabs that were not properly detecting the active status. Now smart bar tabs show which tab is currently active.
+- Queue file path usage.  The file path is no longer saved initially.  It is generated at process time. The fixes the issue of changing servers and the queue manager not able to process the job because the disk file path has changed.
+
+### Added
+- [Issue #6](https://github.com/cognetif/tinyimg/issues/6) : Setting for Development Mode: By default "On". When On the system will queue images but not process them even if system is set for CRON processing.  Warning bar will display within app when dev mode is active.
+- Setting for Batch size: By default -1 which is interpreted as unlimited. You can set to an integer within settings and it will limit the batch size processed each CRON execution.  Good for people who run into time outs or memory limits when executing the CRON job.
+- Status Ignore.  You can now ignore a file.  If for some reason you don't want all the images to process or there is a few specific ones that keep falling into an ERROR state while processing you can now ignore them from the queue.  They will not be processed again until you re-queue them.
+- Option Requeue all issues.  From the options page you can requeue all issues now.  This will reset the status back to QUEUE for any of the jobs currently in ERROR or WORKING.  This is intended to help people who's CRON job failed and the jobs are now stuck in working state.

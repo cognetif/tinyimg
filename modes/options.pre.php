@@ -9,7 +9,7 @@ use Cognetif\TinyImg\Manager;
 
 $message = "";
 if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
-    ["options" => ["regexp" => "/^REQUEUE|PROCESS|CLEAN$/"]])) {
+    ["options" => ["regexp" => "/^REQUEUE|REQUEUE-ALL|PROCESS|CLEAN|IGNORE$/"]])) {
 
     switch ($action) {
         case 'PROCESS' :
@@ -26,6 +26,16 @@ if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
             $message = $HTML->success_message($Lang->get('The queue has been cleaned.'));
             break;
 
+        case 'REQUEUE-ALL' :
+            Manager::requeue_all_error_working($API);
+            $message = $HTML->success_message($Lang->get('The queue has been reset.'));
+            break;
+
+        case 'IGNORE' :
+            $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+            Manager::ignore($API, $id);
+            PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg');
+            break;
         case 'REQUEUE' :
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
             Manager::requeue($API, $id);
