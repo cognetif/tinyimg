@@ -8,6 +8,7 @@ echo $HTML->title_panel([
     'heading' => $Lang->get('Listing recent jobs'),
 ], $CurrentUser);
 
+
 include(__DIR__ . '/../util/_smartbar.php');
 
 $Listing = new PerchAdminListing($CurrentUser, $HTML, $Lang, $Paging);
@@ -41,6 +42,8 @@ $Listing->add_col([
                 return "&#9201; ". $Lang->get('Queued');
             case 'WORKING':
                 return "&#128476; ". $Lang->get('Working');
+            case 'IGNORE' :
+                return '' . $Lang->get('Ignored');
             default :
                 return "&#128165; ". $Lang->get('Error');
         }
@@ -125,8 +128,9 @@ $Listing->add_col([
 $Listing->add_col([
     'title' => $Lang->get('Actions'),
     'value' => function ($Item) use ($Lang) {
+        $html = '';
         if ($Item->status() !== 'QUEUED') {
-            return sprintf("<form action=\"options.php\" method=\"POST\">
+            $html .= sprintf("<form class='form-inline' action=\"options.php\" method=\"POST\">
                 <input type=\"hidden\" name=\"id\" value=\"%d\" />
                 <input type=\"hidden\" name=\"action\" value=\"REQUEUE\" />
                 <button class=\"button button-icon\" type=\"submit\">%s %s</button>
@@ -136,7 +140,18 @@ $Listing->add_col([
                 $Lang->get('ReQueue')
             );
         }
-        return "";
+
+        if (!in_array($Item->status(),['DONE','IGNORE'])) {
+            $html .= sprintf("<form class='form-inline' action=\"options.php\" method=\"POST\">
+                <input type=\"hidden\" name=\"id\" value=\"%d\" />
+                <input type=\"hidden\" name=\"action\" value=\"IGNORE\" />
+                <button class=\"button button-icon\" type=\"submit\">%s</button>
+                </form>",
+                $Item->queueID(),
+                $Lang->get('Ignore')
+            );
+        }
+        return $html;
     },
 ]);
 

@@ -1,4 +1,7 @@
 <?php
+$API = new PerchAPI(1.0, 'cognetif_tinyimg');
+$db = $API->get('DB');
+
 $sql = "
     SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_SCHEMA='" . PERCH_DB_DATABASE . "'
@@ -41,3 +44,9 @@ if (!$db->get_value($sql)) {
     $db->execute($sql);
 }
 
+$sql = "
+        ALTER TABLE `" . PERCH_DB_PREFIX . "cognetif_tinyimg_queue`
+        CHANGE `status` `status` ENUM('QUEUED', 'WORKING', 'DONE', 'ERROR', 'IGNORE') DEFAULT 'QUEUED'
+    ";
+
+$db->execute($sql);

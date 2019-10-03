@@ -9,6 +9,20 @@ if ($CurrentUser->logged_in()) {
 
     $this->add_setting('cognetif_tinyimg_api_key', 'Tinify API Key', 'text');
 
+    $this->add_setting('cognetif_tinyimg_dev_mode', 'Development Mode (On = No processing will happen)', 'select',
+        'on', [
+            [
+                'label' => $Lang->get('On'),
+                'value' => 'on',
+            ],
+            [
+                'label' => $Lang->get('Off'),
+                'value' => 'off',
+            ],
+        ]);
+
+    $this->add_setting('cognetif_tinyimg_batch_size', 'Batch Size (-1 unlimited)', 'text', '-1');
+
     $this->add_setting('cognetif_tinyimg_mode', 'Optimization Mode', 'select', 'on_upload', [
         [
             'label' => $Lang->get('On Upload - Slower uploads'),
