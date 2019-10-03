@@ -47,3 +47,7 @@ All notable changes to this project will be documented in this file.
 - Setting for Batch size: By default -1 which is interpreted as unlimited. You can set to an integer within settings and it will limit the batch size processed each CRON execution.  Good for people who run into time outs or memory limits when executing the CRON job.
 - Status Ignore.  You can now ignore a file.  If for some reason you don't want all the images to process or there is a few specific ones that keep falling into an ERROR state while processing you can now ignore them from the queue.  They will not be processed again until you re-queue them.
 - Option Requeue all issues.  From the options page you can requeue all issues now.  This will reset the status back to QUEUE for any of the jobs currently in ERROR or WORKING.  This is intended to help people who's CRON job failed and the jobs are now stuck in working state.
+
+## [v1.4.1] - 2019-10-03
+### Fixed
+- [Issue #12](https://github.com/cognetif/tinyimg/issues/12)
