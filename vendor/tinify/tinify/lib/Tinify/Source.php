@@ -9,6 +9,12 @@ class Source {
         return self::fromBuffer(file_get_contents($path));
     }
 
+    /**
+     * @param $string
+     * @return Source
+     * @throws AccountException
+     * @throws ConnectionException
+     */
     public static function fromBuffer($string) {
         $response = Tinify::getClient()->request("post", "/shrink", $string);
         return new self($response->headers["location"]);

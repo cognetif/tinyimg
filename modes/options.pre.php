@@ -1,20 +1,21 @@
 <?php
-
 use Cognetif\TinyImg\Manager;
 
 /**
- * @var \PerchAPI_Lang $Lang
- * @var \PerchAPI_HTML $HTML
+ * @var PerchAPI_Lang $Lang
+ * @var PerchAPI_HTML $HTML
  */
 
 $message = "";
 if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
     ["options" => ["regexp" => "/^REQUEUE|REQUEUE-ALL|PROCESS|CLEAN|IGNORE$/"]])) {
 
+    /** @var Manager $manager */
+    $manager = $di['Manager'];
     switch ($action) {
         case 'PROCESS' :
-            $result = Manager::run_queue($API);
-            if ($result) {
+
+            if ($result = $manager->run_queue()) {
                 $message = $HTML->success_message($Lang->get('The queue completed successfully.'));
             } else {
                 $message = $HTML->failure_message($Lang->get('The queue completed with errors.'));
@@ -22,23 +23,24 @@ if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
             break;
 
         case 'CLEAN' :
-            Manager::clean_tinyimg_queue($API);
+            $manager->clean_tinyimg_queue();
             $message = $HTML->success_message($Lang->get('The queue has been cleaned.'));
             break;
 
         case 'REQUEUE-ALL' :
-            Manager::requeue_all_error_working($API);
+
+            $manager->requeue_all_error_working();
             $message = $HTML->success_message($Lang->get('The queue has been reset.'));
             break;
 
         case 'IGNORE' :
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-            Manager::ignore($API, $id);
+            $manager->ignore($id);
             PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg');
             break;
         case 'REQUEUE' :
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-            Manager::requeue($API, $id);
+            $manager->requeue($id);
             PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg');
             break;
         default:

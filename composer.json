@@ -3,7 +3,8 @@
     "description": "Perch app to optimize uploaded images via Tinify",
     "type": "library",
     "require": {
-        "tinify/tinify": "^1.5"
+        "tinify/tinify": "^1.5",
+        "pimple/pimple": "^3.2"
     },
     "license": "MIT",
     "authors": [
@@ -14,7 +15,7 @@
     ],
     "autoload" : {
         "psr-4":{
-            "Cognetif\\TinyImg\\" :"lib\\Cognetif\\TinyImg"
+            "Cognetif\\TinyImg\\" :"lib\\TinyImg"
         }
     }
 }

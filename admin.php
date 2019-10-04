@@ -1,11 +1,19 @@
 <?php
+include('util/autoloader.php');
 
-$API = new PerchAPI(1.0, 'cognetif_tinyimg');
-$Lang = $API->get('Lang');
-$db = $API->get('DB');
+use Pimple\Container;
+$di = new Container();
+require_once('util/di_container.php');
+
+$Lang = $di['PerchApi']->get('Lang');
+$db = $di['PerchApi']->get('DB');
+
+
+
 if ($CurrentUser->logged_in()) {
     $this->register_app('cognetif_tinyimg', 'TinyImage', 1, 'Image optimisation', '1.0');
     $this->require_version('cognetif_tinyimg', '3.0');
+
 
     $this->add_setting('cognetif_tinyimg_api_key', 'Tinify API Key', 'text');
 
@@ -86,7 +94,6 @@ if ($CurrentUser->logged_in()) {
             ],
         ]);
 
-    include('util/autoloader.php');
     include('util/events.php');
     include('db/updates.php');
 

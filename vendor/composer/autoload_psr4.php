@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Tinify\\' => array($vendorDir . '/tinify/tinify/lib/Tinify'),
-    'Cognetif\\' => array($baseDir . '/lib/Cognetif'),
+    'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'Cognetif\\TinyImg\\' => array($baseDir . '/lib/TinyImg'),
 );
