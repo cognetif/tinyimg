@@ -16,9 +16,13 @@ class ComposerStaticInited8929558c940dc561f2a22c45295127
         array (
             'Tinify\\' => 7,
         ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
         'C' => 
         array (
-            'Cognetif\\' => 9,
+            'Cognetif\\TinyImg\\' => 17,
         ),
     );
 
@@ -27,9 +31,23 @@ class ComposerStaticInited8929558c940dc561f2a22c45295127
         array (
             0 => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify',
         ),
-        'Cognetif\\' => 
+        'Psr\\Container\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/lib/Cognetif',
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Cognetif\\TinyImg\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/lib/TinyImg',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
         ),
     );
 
@@ -38,6 +56,7 @@ class ComposerStaticInited8929558c940dc561f2a22c45295127
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInited8929558c940dc561f2a22c45295127::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInited8929558c940dc561f2a22c45295127::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInited8929558c940dc561f2a22c45295127::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

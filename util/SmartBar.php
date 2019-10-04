@@ -1,11 +1,12 @@
 <?php
 
-use Cognetif\TinyImg\Util\SettingHelper;
 
-if (SettingHelper::isDevMode()) {
+if (filter_var($di['SettingsHelper']->get('cognetif_tinyimg_dev_mode'), FILTER_VALIDATE_BOOLEAN)) {
+
     $Alert = new PerchAlert();
     $Alert->set('warning', $Lang->get('Development Mode Active. No optimization of images will occur until deactivated within settings'));
     $Alert->output();
+
 }
 
 $Smartbar = new PerchSmartbar($CurrentUser, $HTML, $Lang);

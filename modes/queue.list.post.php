@@ -1,24 +1,28 @@
 <?php
 /**
- * @var \PerchAPI_Lang $Lang
- * @var \PerchAPI_HTML $HTML
+ * @var PerchAPI_Lang $Lang
+ * @var PerchAPI_HTML $HTML
+ * @var Job[] $jobs
  */
+use Cognetif\TinyImg\Job;
 
 echo $HTML->title_panel([
     'heading' => $Lang->get('Listing recent jobs'),
 ], $CurrentUser);
 
 
-include(__DIR__ . '/../util/_smartbar.php');
+include(__DIR__ . '/../util/SmartBar.php');
 
 $Listing = new PerchAdminListing($CurrentUser, $HTML, $Lang, $Paging);
+
 $Listing->add_col([
     'title' => $Lang->get('Image'),
-    'value' => function ($Item) {
+    'value' => function (Job $Item) {
         return sprintf("<div style=\"max-width:150px; position:relative;\"><img style=\"max-width:100%%\" src=\"%s\" alt=\"%s\" /></div>",
             $Item->web_path(), $Item->file_name());
     },
 ]);
+
 $Listing->add_col([
     'title'  => $Lang->get('Date'),
     'value'  => 'created',
@@ -34,7 +38,7 @@ $Listing->add_col([
 
 $Listing->add_col([
     'title' => $Lang->get('Status'),
-    'value' => function ($Item) use ($Lang){
+    'value' => function (Job $Item) use ($Lang){
         switch($Item->status()) {
             case 'DONE':
                 return"&#9989; " . $Lang->get('Done');
@@ -53,7 +57,7 @@ $Listing->add_col([
 
 $Listing->add_col([
     'title' => $Lang->get('Original size'),
-    'value' => function ($Item) {
+    'value' => function (Job $Item) {
         if ($Item->orig_size() < 1048576) {
             $size = round($Item->orig_size()/1024, 2).'<span class="unit">KB</span>';
         } else {
@@ -68,7 +72,7 @@ $Listing->add_col([
 $Listing->add_col([
     'title' => $Lang->get('New size'),
     'sort'  => 'tiny_size',
-    'value' => function ($Item) {
+    'value' => function (Job $Item) {
         if ($Item->tiny_size() > 0) {
 
             if ($Item->tiny_size() < 1048576) {
@@ -87,7 +91,7 @@ $Listing->add_col([
 $Listing->add_col([
     'title' => $Lang->get('Percent Savings'),
     'sort'  => 'percent_saved',
-    'value' => function ($Item) use ($Lang) {
+    'value' => function (Job $Item) use ($Lang) {
 
         if ($Item->percent_saved() > 0) {
 
@@ -121,13 +125,14 @@ $Listing->add_col([
 
             }
         }
+        return '';
     },
 
 ]);
 
 $Listing->add_col([
     'title' => $Lang->get('Actions'),
-    'value' => function ($Item) use ($Lang) {
+    'value' => function (Job $Item) use ($Lang) {
         $html = '';
         if ($Item->status() !== 'QUEUED') {
             $html .= sprintf("<form class='form-inline' action=\"options.php\" method=\"POST\">

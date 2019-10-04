@@ -4,13 +4,18 @@
  * @var \PerchAPI_HTML $HTML
  * @var \PerchAPI_Paging $Paging
  */
+include('autoloader.php');
+
+use Pimple\Container;
 
 include(__DIR__ . '/../../../../core/inc/api.php');
 
-$API    = new PerchAPI(1.0, 'cognetif_tinyimg');
-$Lang   = $API->get('Lang');
-$HTML   = $API->get('HTML');
-$Paging = $API->get('Paging');
+$di = new Container();
+include('di_container.php');
+
+$Lang   = $di['PerchApi']->get('Lang');
+$HTML   = $di['PerchApi']->get('HTML');
+$Paging = $di['PerchApi']->get('Paging');
 
 # Set the page title
 $Perch->page_title = $Lang->get($title);
