@@ -1,1 +1,3 @@
 lang/*.txt
+/tests/report/
+.phpunit.result.cache

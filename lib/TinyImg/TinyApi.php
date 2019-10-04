@@ -22,7 +22,6 @@ class TinyApi {
     public function tinifyImage($path)
     {
         $key = $this->config('cognetif_tinyimg_api_key');
-
         Tinify::setKey($key);
         return Source::fromFile($path)->toFile($path);
     }

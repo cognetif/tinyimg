@@ -1,0 +1,24 @@
+<phpunit
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+>
+    <testsuites>
+        <testsuite name="cognetif-tinyimg">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>lib</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <server name="REQUEST_URI" value="/tests"/>
+        <server name="HTTP_HOST" value="localhost" />
+        <env name="API_KEY" value="BwjZ0QvXnTrDmrDqyKYRrcKrsFgLY8KC" />
+    </php>
+    <logging>
+        <log type="coverage-html" target="./tests/report" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./clover.xml"/>
+    </logging>
+</phpunit>

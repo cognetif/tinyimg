@@ -37,7 +37,7 @@ class Icon
      */
     private function renderIcon($iconBase64, $options)
     {
-        return sprintf('<img src="%s" %s%s%s%s%s />',
+        return sprintf('<img src="%s"%s%s%s%s%s />',
             $iconBase64,
             $this->getOptionAttribute('alt', $options, true),
             $this->getOptionAttribute('class', $options),

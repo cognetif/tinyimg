@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "tinify/tinify": "^1.5",
-        "pimple/pimple": "^3.2"
+        "pimple/pimple": "^3.2",
+        "phpunit/phpunit": "^8"
     },
     "license": "MIT",
     "authors": [

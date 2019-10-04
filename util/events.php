@@ -1,6 +1,7 @@
 <?php
 use Cognetif\TinyImg\Manager;
-$API = new PerchAPI(1.0, 'cognetif_tinyimg');
+
+$API = $di['PerchApi'];
 
 $API->on('assets.upload_image', function ($event) use ($di){
 
