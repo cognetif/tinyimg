@@ -44,10 +44,18 @@ final class TinyApiTest extends TestCase
 
     public function testCanReduceImageFileSize()
     {
-        $origFileSize = filesize($this->originalFilePath);
-        $this->tinyApi->tinifyImage($this->testFilePath);
-        $finalFileSize = filesize($this->testFilePath);
-        $this->assertTrue(($origFileSize > $finalFileSize));
+
+        if ($_ENV['SKIP_TINY_API'] || ! $_ENV['API_KEY']) {
+            $this->markTestSkipped(
+                'Skipping Tiny API Tests. Remove ENV skip var or add the API_KEY in phpunit.xml to resume testing.'
+            );
+        } else {
+
+            $origFileSize = filesize($this->originalFilePath);
+            $this->tinyApi->tinifyImage($this->testFilePath);
+            $finalFileSize = filesize($this->testFilePath);
+            $this->assertTrue(($origFileSize > $finalFileSize));
+        }
 
     }
 
