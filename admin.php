@@ -1,14 +1,9 @@
 <?php
-include('util/autoloader.php');
-
-use Pimple\Container;
-$di = new Container();
-require_once('util/di_container.php');
+require __DIR__ . '/util/autoloader.php';
+require __DIR__ . '/util/di_container.php';
 
 $Lang = $di['PerchApi']->get('Lang');
 $db = $di['PerchApi']->get('DB');
-
-
 
 if ($CurrentUser->logged_in()) {
     $this->register_app('cognetif_tinyimg', 'TinyImage', 1, 'Image optimisation', '1.0');
@@ -94,7 +89,7 @@ if ($CurrentUser->logged_in()) {
             ],
         ]);
 
-    include('util/events.php');
-    include('db/updates.php');
+    require __DIR__ . '/util/events.php';
+    require __DIR__ . '/db/updates.php';
 
 }

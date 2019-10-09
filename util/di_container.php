@@ -7,8 +7,9 @@ use Cognetif\TinyImg\RunLogger;
 use Cognetif\TinyImg\TinyApi;
 use Cognetif\TinyImg\Util\Icon;
 use Cognetif\TinyImg\Util\SettingHelper;
+use Pimple\Container;
 
-
+$di = new Container();
 $di['PerchScheduledTasks'] = function () {
     return new PerchScheduledTasks ();
 };

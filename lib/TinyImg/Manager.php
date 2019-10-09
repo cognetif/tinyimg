@@ -1,6 +1,8 @@
 <?php
+
 namespace Cognetif\TinyImg;
 
+use Cognetif\TinyImg\Exceptions\DivisionByZeroException;
 use Cognetif\TinyImg\Traits\ConfigurableTrait;
 use Cognetif\TinyImg\Traits\PerchTrait;
 use Cognetif\TinyImg\Util\SettingHelper;
@@ -52,45 +54,31 @@ class Manager
      */
     public function run_queue()
     {
+        $result = true;
+
+        if ($this->configIsDevMode()) {
+            $this->debugLog('Cognetif TinyImg - DevMode On : Skipping Optimization');
+            return true;
+        }
 
         $jobs = $this->queue->getBatch($this->configBatchSize());
         $this->resetCount();
-
-        $result = true;
 
         if (!$jobs) {
             return false;
         }
 
-        if ($this->configIsProdMode()) {
-            foreach ($jobs as $job) {
-                $job->update(['status' => 'WORKING']);
-            }
-        }
+        $jobs = $this->reserveJobs($jobs);
 
         foreach ($jobs as $job) {
 
-
             $details = $job->get_details();
-
-            if ($this->configIsDevMode()) {
-
-                $this->debugLog('Cognetif TinyImg - DevMode On : Skipping ' . $details['file_name']);
-                continue;
-
-            }
 
             $filePath = PERCH_SITEPATH . $details['web_path'];
 
             try {
                 $tinySize = $this->tinyApi->tinifyImage($filePath);
-
-                if ($details['orig_size'] > 0) {
-                    $percentSaved = round(100 * (1 - ($tinySize / $details['orig_size'])), 2);
-                } else {
-                    $this->debugError('Cognetif TinyImg original file size is 0 for id' . $details['queueID']);
-                    $percentSaved = -1;
-                }
+                $percentSaved = $this->calculatePercentSaved($details['orig_size'], $tinySize, $details['queueID']);
 
                 $data = [
                     'status' => 'DONE',
@@ -109,6 +97,16 @@ class Manager
                 ];
 
                 $result = false;
+
+            } catch (DivisionByZeroException $e) {
+
+                $this->debugError($e->getMessage());
+                $data = [
+                    'status' => 'DONE',
+                    'tiny_size' => filesize($filePath),
+                    'percent_saved' => -1,
+                ];
+
             }
 
             $job->update($data);
@@ -236,7 +234,6 @@ class Manager
                 'tiny_size' => 0,
                 'status' => 'QUEUED',
             ];
-
             if (!$job->update($data)) {
                 $job->update(['status' => 'ERROR']);
             }
@@ -254,5 +251,35 @@ class Manager
     public function getRunCount(): int
     {
         return $this->runCount;
+    }
+
+    /**
+     * @param array $jobs
+     * @return array
+     */
+    private function reserveJobs($jobs = [])
+    {
+
+        foreach ($jobs as $job) {
+            $job->update(['status' => 'WORKING']);
+        }
+
+        return $jobs;
+    }
+
+    /**
+     * @param $tinySize
+     * @param $origSize
+     * @param $queueID
+     * @return float
+     * @throws DivisionByZeroException
+     */
+    private function calculatePercentSaved($tinySize, $origSize, $queueID)
+    {
+        if ($origSize > 0) {
+            return round(100 * (1 - ($tinySize / $origSize)), 2);
+        }
+
+        throw new DivisionByZeroException($queueID);
     }
 }
