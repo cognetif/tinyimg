@@ -51,3 +51,7 @@ All notable changes to this project will be documented in this file.
 ## [v1.4.1] - 2019-10-03
 ### Fixed
 - [Issue #12](https://github.com/cognetif/tinyimg/issues/12)
+
+## [v1.4.2] - 2019-10-09
+### Fixed
+- [Issue #15](https://github.com/cognetif/tinyimg/issues/15) - Where users where getting errors on Perch standard because the PERCH_SITEPATH constant was not set.
