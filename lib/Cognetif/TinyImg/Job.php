@@ -22,7 +22,7 @@ class Job extends \PerchAPI_Base
 
         self::activate($api, $db);
 
-        $orig_size = filesize(PERCH_SITEPATH . $asset->web_path);
+        $orig_size = filesize(COGNETIF_SITE_PATH . $asset->web_path);
         $data = [
             'file_name' => $asset->file_name,
             'file_path' => $asset->file_path,
@@ -35,7 +35,7 @@ class Job extends \PerchAPI_Base
         if ($mode === 'upload') {
             try {
                 if (SettingHelper::isProdMode()) {
-                    $result = Manager::tinify_image($api, PERCH_SITEPATH . $asset->web_path);
+                    $result = Manager::tinify_image($api, COGNETIF_SITE_PATH . $asset->web_path);
                     $db->update(PERCH_DB_PREFIX . self::DB_TABLE, [
                         'tiny_size' => $result,
                         'status' => 'DONE',

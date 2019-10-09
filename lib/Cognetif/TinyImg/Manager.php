@@ -59,7 +59,7 @@ class Manager
 
                     if (SettingHelper::isProdMode()) {
 
-                        $filePath = PERCH_SITEPATH . $details['web_path'];
+                        $filePath = COGNETIF_SITE_PATH . $details['web_path'];
                         try {
                             $tinySize = self::tinify_image($api, $filePath);
                             if ($details['orig_size'] > 0) {
@@ -117,7 +117,7 @@ class Manager
             $queue = new Queue($api);
             $job = $queue->get_one_by('queueID', $id);
             if ($job) {
-                $filePath = PERCH_SITEPATH . $job->get_details()['web_path'];
+                $filePath = COGNETIF_SITE_PATH . $job->get_details()['web_path'];
                 $job->update([
                     'orig_size' => filesize($filePath),
                     'tiny_size' => 0,
@@ -171,7 +171,7 @@ class Manager
 
         if ($jobs) {
             foreach ($jobs as $job) {
-                $filePath = PERCH_SITEPATH . $job->get_details()['web_path'];
+                $filePath = COGNETIF_SITE_PATH . $job->get_details()['web_path'];
                 if (!file_exists($filePath)) {
                     $job->delete();
                 }
@@ -193,7 +193,7 @@ class Manager
         if ($jobs) {
             foreach ($jobs as $job) {
                 if ($job) {
-                    $filePath = PERCH_SITEPATH . $job->get_details()['web_path'];
+                    $filePath = COGNETIF_SITE_PATH . $job->get_details()['web_path'];
                     $success = $job->update([
                         'orig_size' => filesize($filePath),
                         'tiny_size' => 0,
