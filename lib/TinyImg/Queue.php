@@ -79,7 +79,7 @@ class Queue extends PerchAPI_Factory
     private function detectInstallRequired()
     {
         try {
-            $this->db->get_table_meta(PERCH_DB_PREFIX . $this->table);
+            $this->db->get_table_meta($this->table);
         } catch (PDOException $e) {
             $this->attempt_install();
         }
