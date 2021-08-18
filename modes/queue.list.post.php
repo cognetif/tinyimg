@@ -15,8 +15,11 @@ $Listing = new PerchAdminListing($CurrentUser, $HTML, $Lang, $Paging);
 $Listing->add_col([
     'title' => $Lang->get('Image'),
     'value' => function ($Item) {
-        return sprintf("<div style=\"max-width:150px; position:relative;\"><img style=\"max-width:100%%\" src=\"%s\" alt=\"%s\" /></div>",
-            $Item->web_path(), $Item->file_name());
+        return sprintf("<div style=\"max-width:150px; position:relative;\" id=\"i%d\"><img style=\"max-width:100%%\" src=\"%s\" alt=\"%s\" /></div>",
+            $Item->queueID(),
+            $Item->web_path(),
+            $Item->file_name()
+        );
     },
 ]);
 $Listing->add_col([
@@ -129,12 +132,21 @@ $Listing->add_col([
     'title' => $Lang->get('Actions'),
     'value' => function ($Item) use ($Lang) {
         $html = '';
+        $page = filter_input(INPUT_GET,'page', FILTER_VALIDATE_INT);
+        if (!$page) {
+            $page = 1;
+        }
+
         if ($Item->status() !== 'QUEUED') {
             $html .= sprintf("<form class='form-inline' action=\"options.php\" method=\"POST\">
                 <input type=\"hidden\" name=\"id\" value=\"%d\" />
-                <input type=\"hidden\" name=\"action\" value=\"REQUEUE\" />
+                <input type=\"hidden\" name=\"action\" value=\"REQUEUE\" />     
+                <input type=\"hidden\" name=\"page\" value=\"%d\" /> 
+                <input type=\"hidden\" name=\"item\" value=\"i%d\" />                 
                 <button class=\"button button-icon\" type=\"submit\">%s %s</button>
                 </form>",
+                $Item->queueID(),
+                $page,
                 $Item->queueID(),
                 PerchUI::icon('core/o-backup'),
                 $Lang->get('ReQueue')
@@ -145,8 +157,12 @@ $Listing->add_col([
             $html .= sprintf("<form class='form-inline' action=\"options.php\" method=\"POST\">
                 <input type=\"hidden\" name=\"id\" value=\"%d\" />
                 <input type=\"hidden\" name=\"action\" value=\"IGNORE\" />
+                <input type=\"hidden\" name=\"page\" value=\"%d\" />    
+                <input type=\"hidden\" name=\"item\" value=\"i%d\" />                             
                 <button class=\"button button-icon\" type=\"submit\">%s</button>
                 </form>",
+                $Item->queueID(),
+                $page,
                 $Item->queueID(),
                 $Lang->get('Ignore')
             );

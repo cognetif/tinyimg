@@ -11,6 +11,15 @@ $message = "";
 if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
     ["options" => ["regexp" => "/^REQUEUE|REQUEUE-ALL|PROCESS|CLEAN|IGNORE$/"]])) {
 
+    $page = filter_input(INPUT_POST, 'page', FILTER_VALIDATE_INT);
+    if (!$page) {
+        $page = 1;
+    }
+    $itemHash = filter_input(INPUT_POST, 'item', FILTER_SANITIZE_STRING);
+    if ($itemHash) {
+        $itemHash = '#'.$itemHash;
+    }
+
     switch ($action) {
         case 'PROCESS' :
             $result = Manager::run_queue($API);
@@ -34,12 +43,12 @@ if ($action = filter_input(INPUT_POST, 'action', FILTER_VALIDATE_REGEXP,
         case 'IGNORE' :
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
             Manager::ignore($API, $id);
-            PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg');
+            PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg?page='.$page. $itemHash);
             break;
         case 'REQUEUE' :
             $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
             Manager::requeue($API, $id);
-            PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg');
+            PerchSystem::redirect(PERCH_LOGINPATH . '/addons/apps/cognetif_tinyimg?page='.$page. $itemHash);
             break;
         default:
             break;

@@ -76,9 +76,7 @@ class Manager
                             ];
 
                         } catch (\Tinify\Exception $e) {
-                            \PerchUtil::debug('Tinify Exception Thrown', 'error');
-                            \PerchUtil::debug($e->getMessage(), 'error');
-                            $data = [
+                            \PerchUtil::debug('Tinify Exception Thrown:' . $e->getMessage(), 'error');$data = [
                                 'status' => 'ERROR',
                                 'message' => 'Tinify Service Exception. Have you reached your monthly limit ?'
                             ];

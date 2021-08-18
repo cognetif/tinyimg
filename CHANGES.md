@@ -55,3 +55,8 @@ All notable changes to this project will be documented in this file.
 ## [v1.4.2] - 2019-10-09
 ### Fixed
 - [Issue #15](https://github.com/cognetif/tinyimg/issues/15) - Where users where getting errors on Perch standard because the PERCH_SITEPATH constant was not set.
+
+
+## [v1.5.0] - 2021-08-18
+### Added
+- Clicking ReQueue or Ignore now returns you to the same place in the queue (page and item) rather then returning just to the first page of the queue.
